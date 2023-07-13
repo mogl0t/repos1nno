@@ -1,37 +1,21 @@
 
 from config import TOKEN
-
-import logging
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher import FSMContext
-
-import dp as dp
-from aiogram import Bot, Dispatcher, types
 import requests
+from aiogram import Bot, Dispatcher, types
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-logging.basicConfig(level=logging.INFO)
-
 bot = Bot(token="6356202859:AAF2qcAcExjnD59LeE5LfbP_2kN6SrXNHxc")
-storage = MemoryStorage()
-dp = Dispatcher(bot, storage=storage)
+dp = Dispatcher(bot)
 
-# Обработка команды /start
 @dp.message_handler(commands=['start'])
-async def handle_start(message: types.Message):
-    # Отправляем приветственное сообщение
-    await message.reply("Привет я бот, который постарается помочь тебе с подготовкой к экзаменам. Нажмите /menu,"
-                        " чтобы открыть список предметов!")
-
-# Установка уровня логирования
-logging.basicConfig(level=logging.INFO)
+async def start_handler(message: types.Message):
+    """Ловец (обработчик сообщений)"""
+    await message.answer("Привет, я помогу тебе подготовиться к экзаменам. Нажми /menu, чтлбы перейти к списку предметов.")
 
 # Инициализация бота и диспетчера
 bot = Bot(token="6356202859:AAF2qcAcExjnD59LeE5LfbP_2kN6SrXNHxc")
-storage = MemoryStorage()
-dp = Dispatcher(bot, storage=storage)
 
 
 # Команда /start
@@ -49,7 +33,7 @@ async def start_command(message: types.Message):
 
 # Обработка выбора предмета
 @dp.message_handler(lambda message: message.text in ['Математика', 'Информатика', 'Русский язык'])
-async def subject_handler(message: types.Message, state: FSMContext):
+async def subject_handler(message: types.Message):
     selected_subject = message.text
 
     if selected_subject == 'Математика':
@@ -72,7 +56,7 @@ async def start_command(message: types.Message):
 
 # Обработка нажатия на кнопку
 @dp.message_handler(lambda message: message.text == 'Открыть список задач по математике')
-async def open_list_handler(message: types.Message, state: FSMContext):
+async def open_list_handler(message: types.Message):
     # Создание списка пунктов
     items = [
         '/matnumber1',
@@ -142,7 +126,8 @@ async def start_handler(message: types.Message):
     await message.answer("За первые три дня будет прочитан 51 доклад, на последние два дня планируется 24 доклада."
 " Поэтому на последний день запланировано 12 докладов. Значит, вероятность того, что доклад профессора М. окажется"
     " запланированным на последний день конференции, равна  дробь 12/75=0,16."
-"Ответ: 0,16.")
+"Ответ: 0,16."
+                         "Нажмите /nummat, чтобы перейти к предмету.")
 
 @dp.message_handler(commands=['matans2'])
 async def start_handler(message: types.Message):
@@ -150,7 +135,8 @@ async def start_handler(message: types.Message):
         await message.answer("Вероятность того, что на одном из требуемых мест окажется чётное число равна 0,5. "
                              "Следовательно, вероятность того, что на двух местах одновременно окажутся два чётных "
                              "числа равна 0,5*0,5 = 0,25."
-"Ответ: 0,25.")
+"Ответ: 0,25."
+                             "Нажмите /nummat, чтобы перейти к предмету.")
 
 @dp.message_handler(commands=['matans3'])
 async def start_handler(message: types.Message):
@@ -160,13 +146,15 @@ async def start_handler(message: types.Message):
                 "и третий насосы (каждый учтен дважды) заполнят 14+9+7=30 бассейнов."
                 " Следовательно, работая одновременно, первый, второй и третий насосы заполняют 15 бассейнов за 126 минут,"
                 " а значит, 1 бассейн за 8,4 минуты."
- "Ответ: 8,4.")
+ "Ответ: 8,4."
+                "Нажмите /nummat, чтобы перейти к предмету.")
 
 
 @dp.message_handler(commands=['matans4'])
 async def start_handler(message: types.Message):
         """Ловец (обработчик сообщений)"""
-        await message.answer("В среднем без дефектов выпускают 92 сумки из каждых 100,поэтому искомая вероятность равна 0,92. Ответ: 0,92.")
+        await message.answer("В среднем без дефектов выпускают 92 сумки из каждых 100,поэтому искомая вероятность равна 0,92. Ответ: 0,92."
+                             "Нажмите /nummat, чтобы перейти к предмету.")
 
 @dp.message_handler(commands=['matans5'])
 async def start_handler(message: types.Message):
@@ -175,7 +163,8 @@ async def start_handler(message: types.Message):
                   "Скорость сближения поездов равна 60км/ч или 1км/мин. Следовательно, за 1 минуту пассажирский"
                   " поезд сместится относительно товарного на 1км. При этом он преодолеет расстояние, равное сумме "
                   "длин поездов. Поэтому длина пассажирского поезда равна 1000 − 600 = 400м."
-"Отвеет: 400м.")
+"Отвеет: 400м."
+                  "Нажмите /nummat, чтобы перейти к предмету.")
 
 
 
@@ -192,7 +181,7 @@ async def start_command(message: types.Message):
 
 # Обработка нажатия на кнопку
 @dp.message_handler(lambda message: message.text == 'Открыть список задач по русскому языку')
-async def open_list_handler(message: types.Message, state: FSMContext):
+async def open_list_handler(message: types.Message):
     # Создание списка пунктов
     items = [
         '/rusnumber1',
@@ -254,21 +243,24 @@ async def start_handler(message: types.Message):
 async def start_handler(message: types.Message):
               """Ловец (обработчик сообщений)"""
               await message.answer(
-                        "Расставим ударения: озлОбить, отозвалАсь, начАвшись, лОктя, принЯвшись.Ответ: 15.")
+                        "Расставим ударения: озлОбить, отозвалАсь, начАвшись, лОктя, принЯвшись.Ответ: 15."
+                        "Нажмите /numrus для перехода к предмету.")
 
 @dp.message_handler(commands=['rusans2'])
 async def start_handler(message: types.Message):
                   """Ловец (обработчик сообщений)"""
                   await message.answer("Хороший руководитель, без всякого сомнения, заботится о своих подчинённых и стремится показывать им образец во всём."
 "Пояснение: Приведём верное написание:Хороший руководитель, без всякого сомнения, заботится о своих подчинённых и стремится "
-                                       "показывать им пример во всём.Ошибка заключалась в неверном употреблении фразеологизма.")
+                                       "показывать им пример во всём.Ошибка заключалась в неверном употреблении фразеологизма."
+                                       "Нажмите /numrus для перехода к предмету.")
 
 @dp.message_handler(commands=['rusans3'])
 async def start_handler(message: types.Message):
               """Ловец (обработчик сообщений)"""
               await message.answer(
 "запятая выделяет деепричастный оборот «отыскивая глазами лодку с сидящим в ней верным Ипполитом Матвеевичем»."
-"Ответ: 2.")
+"Ответ: 2."
+"Нажмите /numrus для перехода к предмету.")
 
 @dp.message_handler(commands=['rusans4'])
 async def start_handler(message: types.Message):
@@ -276,13 +268,15 @@ async def start_handler(message: types.Message):
                   await message.answer(
  "1)запятая на границе частей в сложноподчинённом предложении: отделяет главную часть «Неподалёку находилось поместье» "
  "от придаточной «владельцы которого мало что заслужили, кроме худой о себе славы по округе»"
-"4), 5), 7) отделяют придаточные части. Ответ: 1457.")
+"4), 5), 7) отделяют придаточные части. Ответ: 1457."
+ "Нажмите /numrus для перехода к предмету.")
 
 @dp.message_handler(commands=['rusans5'])
 async def start_handler(message: types.Message):
                       """Ловец (обработчик сообщений)"""
                       await message.answer(
-                          "ЮН(1)ая красавица смущёНН(2)о улыбнулась и выронила золочёН(3)ую пудреН(4)ицу из рук. Ответ: 134.")
+                          "ЮН(1)ая красавица смущёНН(2)о улыбнулась и выронила золочёН(3)ую пудреН(4)ицу из рук. Ответ: 134."
+                          "Нажмите /numrus для перехода к предмету.")
 
 @dp.message_handler(commands=['numinfo'])
 async def start_command(message: types.Message):
@@ -296,7 +290,7 @@ async def start_command(message: types.Message):
 
                 # Обработка нажатия на кнопку
 @dp.message_handler(lambda message: message.text == 'Открыть список задач по информатике')
-async def open_list_handler(message: types.Message, state: FSMContext):                    # Создание списка пунктов
+async def open_list_handler(message: types.Message):                    # Создание списка пунктов
                     items = [
                         '/infonumber1',
                         '/infonumber2',
@@ -371,7 +365,8 @@ async def start_handler(message: types.Message):
 "словом 011, поскольку буква Л повторяется в слове БАЛАЛАЙКА 2 раза. Буквы Й и В закодируем кодовыми словами 1000 и 1001 "
 "соответственно (заметим, что хотя буквы В нет в слове БАЛАЛАЙКА, но эта буква может передаваться по каналу связи, "
 "следовательно, для нее должен быть определен код). Тогда наименьшее количество двоичных знаков, которые потребуются для "
-"кодирования слова БАЛАЛАЙКА равно 2+2+3+2+3+2+4+3+2=23. Ответ: 23.")
+"кодирования слова БАЛАЛАЙКА равно 2+2+3+2+3+2+4+3+2=23. Ответ: 23."
+"Нажмите /numinfo для перехода к предмету.")
 
 @dp.message_handler(commands=['infoans2'])
 async def start_handler(message: types.Message):
@@ -380,14 +375,16 @@ async def start_handler(message: types.Message):
 "723 это либо 7 и 23, либо 72 и 3. Второго быть не может, так как числа должны быть записаны в порядке неубывания. "
 "Значит, в результате первого шага автомата были получены числа 7 и 23. 23 нельзя получить суммой двух цифр, а значит, "
 "что это сумма первой, третьей и пятой цифр числа, 7 же - сумма второй и четвёртой. Теперь представим эти числа в "
-"виде сумм так, чтобы первые слагаемые получились как можно меньше.23 = 5 + 9 + 9, 7 = 0 + 7.В итоге получили число 50979.Ответ: 50979.")
+"виде сумм так, чтобы первые слагаемые получились как можно меньше.23 = 5 + 9 + 9, 7 = 0 + 7.В итоге получили число 50979.Ответ: 50979."
+"Нажмите /numinfo для перехода к предмету.")
 
 @dp.message_handler(commands=['infoans3'])
 async def start_handler(message: types.Message):
                     """Ловец (обработчик сообщений)"""
                     await message.answer(
 "Заметим, что количество цветов находится по формуле N=2^i. Значит, если увеличить видеопамять до 400 Кбайт, "
-"в палитре можно будет использовать 2^6=64. Ответ: 64")
+"в палитре можно будет использовать 2^6=64. Ответ: 64"
+"Нажмите /numinfo для перехода к предмету.")
 
 
 @dp.message_handler(commands=['infoans4'])
@@ -398,7 +395,8 @@ async def start_handler(message: types.Message):
 " согласные С и конструкция СЬ, обозначающая какую-либо согласную с мягким знаком. Тогда, например, при использовании в"
 " качестве согласной буквы в конструкции СЬ, буквы Л можно будет получить "
 "4*3*2*1=24 варианта слов. Для оставшейся согласной буквы также получаем"
-" 24 варианта. Таким образом, всего можно составить 2*24=48 различных кодов. Ответ: 48.")
+" 24 варианта. Таким образом, всего можно составить 2*24=48 различных кодов. Ответ: 48."
+"Нажмите /numinfo для перехода к предмету.")
 
 @dp.message_handler(commands=['infoans5'])
 async def start_handler(message: types.Message):
@@ -409,7 +407,8 @@ async def start_handler(message: types.Message):
 " На второе— любую из трех гласных. На третье— любую из двух оставшихся согласных. На четвертое— любую из двух оставшихся"
 " гласных. На пятое— одну оставшуюся согласную. На шестое- одну оставшуюся гласную. По правилу произведения, соответствующие"
 " количества способов перемножаем. Учитывая, что на первое место можно поставить как согласную, так и гласную, "
-"Полина может составить 2*3·*3*2*2*1*1=72 различных кода. Ответ: 72.")
+"Полина может составить 2*3·*3*2*2*1*1=72 различных кода. Ответ: 72."
+"Нажмите /numinfo для перехода к предмету.")
 
 
 
