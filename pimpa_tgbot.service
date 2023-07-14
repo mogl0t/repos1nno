@@ -1,0 +1,14 @@
+
+[Unit]
+Description=Telegram Bot
+After=network.target
+
+[Service]
+User=pimpa
+Group=pimpa
+WorkingDirectory=/home/pimpa/repos1nno/
+Environment="PYTHONPATH=/home/pimpa/repos1nno/"
+ExecStart=/home/pimpa/repos1nno/.venv/bin/python /home/pimpa/repos1nno/main.py
+
+[Install]
+WantedBy=multi-user.target
